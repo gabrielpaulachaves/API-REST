@@ -12,15 +12,15 @@
 
 const express = require("express")
 const app = express()
-const mongoose = require("mongoose")
 require("./config/db")
+const mongoose = require("mongoose")
 require("./models/livros")
 require("./models/categoria")
 const livros = require("./routes/livro")
 const categoria = require("./routes/categoria")
-app.use(express.json()) //transforma a requisicao que está em JSON em objeto JS
 
-
+//navegador se usa urlencoded {extended: true}, o resto (como inmsonia usa express.json())
+app.use(express.json()) //transforma a requisicao que está em JSON em objeto JS, interpreta envio de dados em formato JSON
 
 app.use("/livros", livros)
 app.use("/categorias", categoria)
