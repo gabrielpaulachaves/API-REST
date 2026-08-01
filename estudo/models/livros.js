@@ -22,7 +22,7 @@ const livros = new schema({
     categoria:{
         type: schema.Types.ObjectId,
         required: true,
-        ref: "categoria"
+        ref: "categorias"
     }
 })
 
