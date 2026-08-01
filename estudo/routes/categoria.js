@@ -10,7 +10,7 @@ router.get("/listagem", (req, res)=>{
             const categoria = await cat.find().lean()
             res.json(categoria)
         }catch(err){
-            res.status(404).json({Erro: `Erro encontrado: ${err}`})
+            res.status(500).json({Erro: `Erro encontrado: ${err}`})
         }
     }
     buscando()
