@@ -15,9 +15,17 @@ router.get("/listagem", (req, res)=>{
     }
     buscando()
 })
-router.post("/adicionar", (req, res)=>{
-  
 
+router.post("/adicionar", async (req, res)=>{
+        try{
+            const addcat = {
+                nome: req.body.nome
+            }
+         const novo = await new cat(addcat).save()
+         res.status(201).json(novo)  
+        }catch(err){
+            res.status(500).json({mensagem: "erro interno"})
+        }
 })
 
 
