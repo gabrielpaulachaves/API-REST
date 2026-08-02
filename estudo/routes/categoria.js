@@ -4,19 +4,17 @@ const router = express.Router()
 require("../models/categoria")
 const cat = mongoose.model("categorias")
 
-router.get("/listagem", (req, res)=>{
-    async function buscando(){
+router.get("/", async (req, res)=>{
         try{
             const categoria = await cat.find().lean()
             res.json(categoria)
         }catch(err){
             res.status(500).json({Erro: `Erro encontrado: ${err}`})
         }
-    }
-    buscando()
+
 })
 
-router.post("/adicionar", async (req, res)=>{
+router.post("/", async (req, res)=>{
         try{
             const addcat = {
                 nome: req.body.nome

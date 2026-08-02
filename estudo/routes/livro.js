@@ -4,8 +4,7 @@ const router = express.Router()
 require("../models/livros")
 const livro = mongoose.model("livros")
 
-router.get("/listagem", (req, res)=>{
-    async function buscando(){
+router.get("/",async (req, res)=>{ 
         try{
             const livros = await livro.find().populate("categoria").lean()
             res.json(livros)
@@ -18,13 +17,12 @@ router.get("/listagem", (req, res)=>{
              400 = invalido
              404 = não encontrado
              500 = erro interno
-            */
-        }      
+            */    
     }
-    buscando()
+
 })
 
-router.post("/adicionar", async (req, res)=>{
+router.post("/", async (req, res)=>{
     try{
     const addlivro = {
         titulo: req.body.titulo,
@@ -38,6 +36,23 @@ router.post("/adicionar", async (req, res)=>{
     }catch(err){
         res.status(500).json({mensagem: "Erro interno"})
     }
+})
+
+router.put("/:id", async (req, res)=>{
+    try{
+        const att = {
+        titulo: req.body.titulo,
+        autor: req.body.autor,
+        ano: req.body.ano,
+        descricao: req.body.descricao,
+        categoria: req.body.categoria        
+       } 
+       const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+       res.status(200).json(dado)
+
+    }catch(err){
+        res.status(500).json({mensagem: "Erro interno "+ err})
+    }       
 })
 
 module.exports = router
