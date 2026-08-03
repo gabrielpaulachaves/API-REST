@@ -48,26 +48,29 @@ router.put("/:id", async (req, res)=>{
         categoria: req.body.categoria        
        } 
        const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
-       res.status(200).json(dado)
-
-    }catch(err){
         if(!dado){
-            res.status(400).json()
-        }
+            res.status(400).json({mensagem: "ID inválido"})
+        }       
+       res.status(200).json(dado)
+    }catch(err){
         res.status(500).json({mensagem: "Erro interno "+ err})
-    }       
+    } 
+
+    //resultado teste forçando erro = 400 Bad Request   
 })
 
 router.delete("/:id", async (req, res)=>{
     try{
         const del = await livro.findOneAndDelete({_id: req.params.id})
+        if(!del){
+            res.status(404).send({mensagem: "ID não encontrado"})
+        }        
         res.status(204).send()
     }catch(err){
-        if(!del){
-            res.status(404).send()
-        }
         res.status(500).json({mensagem: "erro interno"})
     }
+
+    //resultado teste forçando erro = 404 Not Found
 })
 
 module.exports = router
