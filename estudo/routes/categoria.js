@@ -33,9 +33,9 @@ router.put("/:id", async (req, res)=>{
         }
         const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
         if(!dado){
-            res.status(400).send({mensagem: "ID inválido"})
+            return res.status(404).json({mensagem: "ID não existe"})
         }
-        res.status(200).json(dado)
+       return res.status(200).json(dado)
     }catch(err){   
         res.status(500).json({mensagem: "erro interno"})
     }
@@ -48,9 +48,10 @@ router.delete("/:id", async (req, res)=>{
     try{
         const del = await cat.findOneAndDelete({_id:req.params.id})
         if(!del){
-          res.status(404).send({mensagem: "ID não encontrado"})  
+          return res.status(404).json({mensagem: "ID não encontrado"})  
+          //é necessario o return para que a execução acabe aqui e não continue
         }   
-        res.status(204).send()
+        return res.status(204).send()
     }catch(err){
         res.status(500).json({mensagem: "erro interno"})
     }

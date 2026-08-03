@@ -49,9 +49,10 @@ router.put("/:id", async (req, res)=>{
        } 
        const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
         if(!dado){
-            res.status(400).json({mensagem: "ID inválido"})
+            return res.status(404).json({mensagem: "ID não existe"})
+            
         }       
-       res.status(200).json(dado)
+    return res.status(200).json(dado)
     }catch(err){
         res.status(500).json({mensagem: "Erro interno "+ err})
     } 
@@ -63,9 +64,10 @@ router.delete("/:id", async (req, res)=>{
     try{
         const del = await livro.findOneAndDelete({_id: req.params.id})
         if(!del){
-            res.status(404).send({mensagem: "ID não encontrado"})
+            return res.status(404).json({mensagem: "ID não encontrado"})
         }        
-        res.status(204).send()
+        return res.status(204).send()
+                            //use send() pois 204 nao responde a corpo, JSON sim
     }catch(err){
         res.status(500).json({mensagem: "erro interno"})
     }
