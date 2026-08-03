@@ -55,5 +55,14 @@ router.put("/:id", async (req, res)=>{
     }       
 })
 
+router.delete("/:id", async (req, res)=>{
+    try{
+        const del = await livro.findOneAndDelete({_id: req.params.id})
+        res.status(204).json()
+    }catch(err){
+        res.status(500).json({mensagem: "erro interno"})
+    }
+})
+
 module.exports = router
 
