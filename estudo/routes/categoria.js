@@ -34,13 +34,16 @@ router.put("/:id", async (req, res)=>{
         const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
         res.status(200).json(dado)
     }catch(err){
+        if(!dado){
+            res.status(400).json()
+        }
         res.status(500).json({mensagem: "erro interno"})
     }
 })
 router.delete("/:id", async (req, res)=>{
     try{
         const del = await cat.findOneAndDelete({_id:req.params.id})
-        res.status(204).json()
+        res.status(204).send()
     }catch(err){
         res.status(500).json({mensagem: "erro interno"})
     }

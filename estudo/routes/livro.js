@@ -51,6 +51,9 @@ router.put("/:id", async (req, res)=>{
        res.status(200).json(dado)
 
     }catch(err){
+        if(!dado){
+            res.status(400).json()
+        }
         res.status(500).json({mensagem: "Erro interno "+ err})
     }       
 })
@@ -58,8 +61,11 @@ router.put("/:id", async (req, res)=>{
 router.delete("/:id", async (req, res)=>{
     try{
         const del = await livro.findOneAndDelete({_id: req.params.id})
-        res.status(204).json()
+        res.status(204).send()
     }catch(err){
+        if(!del){
+            res.status(404).send()
+        }
         res.status(500).json({mensagem: "erro interno"})
     }
 })
