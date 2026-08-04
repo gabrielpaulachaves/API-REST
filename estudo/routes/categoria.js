@@ -6,8 +6,14 @@ const cat = mongoose.model("categorias")
 
 router.get("/", async (req, res)=>{
         try{
+                //logica disso, o trim() remove os espaços, ex " " vira "", e "" é considerado false, e o ! transforma esse false em true. Ou seja, SE for verdade, vai cair dentro desse if
+            if(!req.body._id.trim()){
             const categoria = await cat.find().lean()
-            res.json(categoria)
+            res.status(200).json(categoria)                
+            }else{
+                const categoria2 = await cat.findById({_id: req.body._id}).lean()
+                res.status(200).json(categoria2)
+            }
         }catch(err){
             res.status(500).json({Erro: `Erro encontrado: ${err}`})
         }
