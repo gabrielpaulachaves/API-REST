@@ -82,7 +82,15 @@ router.delete("/:id", async (req, res)=>{
 
 router.patch("/:id", async (req, res)=>{
     try{
-        
+        const attparcial = {
+            titulo: req.body.titulo,
+            autor: req.body.autor,
+            ano: req.body.ano,
+            descricao: req.body.descricao,
+            categoria: req.body.categoria
+        }
+        const dadoparcial = await livro.findOneAndUpdate({_id: req.params.id}, attparcial, {new: true})
+        res.status(200).json(dadoparcial)
     }catch(err){
       res.status(500).json({mensagem: "erro interno"})  
     }
