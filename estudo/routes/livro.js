@@ -6,8 +6,13 @@ const livro = mongoose.model("livros")
 
 router.get("/",async (req, res)=>{ 
         try{
+            if(!req.body._id.trim()){
             const livros = await livro.find().populate("categoria").lean()
-            res.json(livros)
+            res.status(200).json(livros)                
+            }else{
+                const livros2 = await livro.findById({_id: req.body._id}).populate("categoria").lean()
+                res.status(200).json(livros2)    
+            }
         }catch(err){
             res.status(404).json({Erro: `Erro encontrado: ${err}`})
             /*sobre os status
@@ -73,6 +78,14 @@ router.delete("/:id", async (req, res)=>{
     }
 
     //resultado teste forçando erro = 404 Not Found
+})
+
+router.patch("/:id", async (req, res)=>{
+    try{
+        
+    }catch(err){
+      res.status(500).json({mensagem: "erro interno"})  
+    }
 })
 
 module.exports = router
