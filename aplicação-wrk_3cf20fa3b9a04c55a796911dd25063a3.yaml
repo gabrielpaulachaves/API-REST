@@ -1,0 +1,302 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: aplicação
+meta:
+  id: wrk_3cf20fa3b9a04c55a796911dd25063a3
+  created: 1785849053395
+  modified: 1785849053395
+  description: ""
+collection:
+  - url: http://localhost:3333/livros
+    name: livros
+    meta:
+      id: req_f0cb33ce71f04e199019d603bc5798df
+      created: 1785760904581
+      modified: 1785847326422
+      isPrivate: false
+      description: ""
+      sortKey: -1785760904581
+    method: GET
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"_id": "6a71de1454f9c0c5dcf9c332"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/livros
+    name: livros
+    meta:
+      id: req_28562c4e19104de987b2a853a4da2c8c
+      created: 1785761312254
+      modified: 1785847314615
+      isPrivate: false
+      description: ""
+      sortKey: -1785760699679.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"titulo": "Gorilas",
+        	"autor": "Curt Kobain",
+        	"ano": 2025,
+        	"descricao": "vai neymar",
+        	"categoria": "6a71dcdc4b7c4d9bc94b61bf"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/categorias
+    name: categorias
+    meta:
+      id: req_e7c6c74782e846109ca7afe40ed66f1c
+      created: 1785761341074
+      modified: 1785847002162
+      isPrivate: false
+      description: ""
+      sortKey: -1785760597228.75
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"nome":"Biologia"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/categorias
+    name: categorias
+    meta:
+      id: req_52072fef9a36428488efab708fdf6bc2
+      created: 1785761349778
+      modified: 1785847307762
+      isPrivate: false
+      description: ""
+      sortKey: -1785760802130.25
+    method: GET
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"_id": ""
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/categorias/
+    name: categorias
+    meta:
+      id: req_81038f9b1f4e4d12aec6a213e143086f
+      created: 1785761357313
+      modified: 1785766966960
+      isPrivate: false
+      description: ""
+      sortKey: -1785760546003.375
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"nome": "computaria"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/livros/6a70970ff6ce6eee536423ad
+    name: livros
+    meta:
+      id: req_73e6dd0dca644daaaeb8ca0db3cb520d
+      created: 1785761366548
+      modified: 1785766831233
+      isPrivate: false
+      description: ""
+      sortKey: -1785760520390.6875
+    method: PUT
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"titulo": "O Pai da computaria",
+        	"autor": "Allan Turing",
+        	"ano": 1945,
+        	"descricao": "palavras não bastam, tem que se envolver com a novinha que senta e não para..",
+        	"categoria": "6a709717f6ce6eee536423ad"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/livros/
+    name: livros
+    meta:
+      id: req_3e5d02ca318343908d02e992fcf8dd1a
+      created: 1785761412311
+      modified: 1785766898086
+      isPrivate: false
+      description: ""
+      sortKey: -1785760507584.3438
+    method: DELETE
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/categorias/6a709717f6ce6eee536423af
+    name: categorias
+    meta:
+      id: req_47e61861ee894a2fbe4de200c75bdf05
+      created: 1785761422642
+      modified: 1785766984494
+      isPrivate: false
+      description: ""
+      sortKey: -1785760501181.1719
+    method: DELETE
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/livros/6a70970ff6ce6eee536423ad
+    name: livros
+    meta:
+      id: req_66be2f8e89004b158702265ef4a86e1e
+      created: 1785847610557
+      modified: 1785847612751
+      isPrivate: false
+      description: ""
+      sortKey: -1785760513987.5156
+    method: PATCH
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"titulo": "O Pai da computaria",
+        	"autor": "Allan Turing",
+        	"ano": 1945,
+        	"descricao": "palavras não bastam, tem que se envolver com a novinha que senta e não para..",
+        	"categoria": "6a709717f6ce6eee536423ad"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3333/categorias/
+    name: categorias
+    meta:
+      id: req_fc3f512838cf4828ad20f6d4bcdcac61
+      created: 1785847632230
+      modified: 1785847639374
+      isPrivate: false
+      description: ""
+      sortKey: -1785760517189.1016
+    method: PATCH
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"nome": "computaria"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_d147f0f70b59483aadfd48f076812b53
+    created: 1785760879339
+    modified: 1785760879339
+environments:
+  name: Base Environment
+  meta:
+    id: env_3a18e0c158b1427e9d03245d2c9fa181
+    created: 1785760879335
+    modified: 1785760879335
+    isPrivate: false
