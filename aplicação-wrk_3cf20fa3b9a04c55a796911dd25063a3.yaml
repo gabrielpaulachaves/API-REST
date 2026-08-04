@@ -12,7 +12,7 @@ collection:
     meta:
       id: req_f0cb33ce71f04e199019d603bc5798df
       created: 1785760904581
-      modified: 1785847326422
+      modified: 1785850455201
       isPrivate: false
       description: ""
       sortKey: -1785760904581
@@ -21,7 +21,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"_id": "6a71de1454f9c0c5dcf9c332"
+        	"_id": ""
         }
     headers:
       - name: Content-Type
@@ -146,12 +146,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/livros/6a70970ff6ce6eee536423ad
+  - url: http://localhost:3333/livros/
     name: livros
     meta:
       id: req_73e6dd0dca644daaaeb8ca0db3cb520d
       created: 1785761366548
-      modified: 1785766831233
+      modified: 1785851002916
       isPrivate: false
       description: ""
       sortKey: -1785760520390.6875
@@ -203,12 +203,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/categorias/6a709717f6ce6eee536423af
+  - url: http://localhost:3333/categorias/
     name: categorias
     meta:
       id: req_47e61861ee894a2fbe4de200c75bdf05
       created: 1785761422642
-      modified: 1785766984494
+      modified: 1785850994731
       isPrivate: false
       description: ""
       sortKey: -1785760501181.1719
@@ -229,52 +229,21 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/livros/6a70970ff6ce6eee536423ad
+  - url: http://localhost:3333/livros/6a71de1454f9c0c5dcf9c332
     name: livros
     meta:
       id: req_66be2f8e89004b158702265ef4a86e1e
       created: 1785847610557
-      modified: 1785847612751
+      modified: 1785850872195
       isPrivate: false
       description: ""
       sortKey: -1785760513987.5156
     method: PATCH
     body:
       mimeType: application/json
-      text: >-
-        {
-        	"titulo": "O Pai da computaria",
-        	"autor": "Allan Turing",
-        	"ano": 1945,
-        	"descricao": "palavras não bastam, tem que se envolver com a novinha que senta e não para..",
-        	"categoria": "6a709717f6ce6eee536423ad"
-        }
-    headers:
-      - name: Content-Type
-        value: application/json
-    settings:
-      renderRequestBody: true
-      encodeUrl: true
-      followRedirects: global
-      cookies:
-        send: true
-        store: true
-      rebuildPath: true
-  - url: http://localhost:3333/categorias/
-    name: categorias
-    meta:
-      id: req_fc3f512838cf4828ad20f6d4bcdcac61
-      created: 1785847632230
-      modified: 1785847639374
-      isPrivate: false
-      description: ""
-      sortKey: -1785760517189.1016
-    method: PATCH
-    body:
-      mimeType: application/json
       text: |-
         {
-        	"nome": "computaria"
+        	"titulo": "A fantástica casa da putaria"
         }
     headers:
       - name: Content-Type
