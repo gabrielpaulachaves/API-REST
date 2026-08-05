@@ -5,16 +5,11 @@ require("../models/livros")
 const livro = mongoose.model("livros")
 
 router.get("/",async (req, res)=>{ 
-        try{
-            if(!req.body._id.trim()){
+        try{        
             const livros = await livro.find().populate("categoria").lean()
             res.status(200).json(livros)                
-            }else{
-                const livros2 = await livro.findById({_id: req.body._id}).populate("categoria").lean()
-                res.status(200).json(livros2)    
-            }
         }catch(err){
-            res.status(404).json({Erro: `Erro encontrado: ${err}`})
+            res.status(500).json({Erro: `Erro interno: ${err}`})
             /*sobre os status
              200 = OK
              201 = novo criado
@@ -24,7 +19,24 @@ router.get("/",async (req, res)=>{
              500 = erro interno
             */    
     }
-
+})
+router.get("/:id", async (req, res)=>{
+    try{
+        if(!mongoose.isValidObjectId(req.params.id)){
+            //logica do return = depois dessa resposta, ainda há codigo para ser executado?
+            return res.status(400).json({mensagem: "ID inválido"})
+        }        
+        const livrofiltro = await livro.findOne({_id: req.params.id}).populate("categoria").lean() 
+        if(!livrofiltro){
+           return res.status(404).json({mensagem: "livro não encontrado"})
+        }else{
+            res.status(200).json(livrofiltro) 
+        }
+           
+    }catch(err){
+        console.log(err)
+        res.status(500).json({Erro: `Erro interno: ${err}`})
+    }
 })
 
 router.post("/", async (req, res)=>{
@@ -82,13 +94,7 @@ router.delete("/:id", async (req, res)=>{
 
 router.patch("/:id", async (req, res)=>{
     try{
-        const attparcial = {
-            titulo: req.body.titulo,
-            autor: req.body.autor,
-            ano: req.body.ano,
-            descricao: req.body.descricao,
-            categoria: req.body.categoria
-        }
+        const attparcial = req.body
         const dadoparcial = await livro.findOneAndUpdate({_id: req.params.id}, attparcial, {new: true})
         res.status(200).json(dadoparcial)
     }catch(err){
@@ -98,3 +104,13 @@ router.patch("/:id", async (req, res)=>{
 
 module.exports = router
 
+/*    
+    //a logica disso aqui foi, tenho um objeto vazio, uma const que recebe o objeto do body e uma const referente a cada propriedade do objeto do body. 
+const attparcial = {}
+        const campo = req.body
+                //essa primeira const sempre vai se referir as propriedades
+        for (const prop in campo) {
+                                //quando faço isso, pego o valor daquela propriedade
+                                //exemplo, se a propriedade for "titulo" e essa propriedade guarda um valor "George Orwell", entao campo[prop] == "George Orwell"
+            attparcial[prop] = campo[prop]
+        } */

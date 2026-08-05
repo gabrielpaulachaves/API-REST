@@ -6,18 +6,25 @@ const cat = mongoose.model("categorias")
 
 router.get("/", async (req, res)=>{
         try{
-                //logica disso, o trim() remove os espaços, ex " " vira "", e "" é considerado false, e o ! transforma esse false em true. Ou seja, SE for verdade, vai cair dentro desse if
-            if(!req.body._id.trim()){
             const categoria = await cat.find().lean()
             res.status(200).json(categoria)                
-            }else{
-                const categoria2 = await cat.findById({_id: req.body._id}).lean()
-                res.status(200).json(categoria2)
-            }
         }catch(err){
-            res.status(500).json({Erro: `Erro encontrado: ${err}`})
+            res.status(500).json({Erro: `Erro interno: ${err}`})
         }
-
+})
+router.get("/:id", async (req, res)=>{
+    try{
+        if(!mongoose.isValidObjectId(req.params.id)){
+            return res.status(400).json({mensagem: "ID inválido"})
+        }
+        const catfiltro = await cat.findById({_id: req.params.id}).lean()
+        if(!catfiltro){
+           return res.status(404).json({mensagem: "Categoria não encontrada"})
+        }
+        res.status(200).json(catfiltro)
+    }catch(err){
+        res.status(500).json({Erro: `Erro interno: ${err}`})
+    }
 })
 
 router.post("/", async (req, res)=>{
