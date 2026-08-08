@@ -3,13 +3,6 @@ const mongoose = require("mongoose")
 const router = express.Router()
 require("../models/livros")
 const livro = mongoose.model("livros")
-
-router.get("/",async (req, res)=>{ 
-        try{        
-            const livros = await livro.find().populate("categoria").lean()
-            res.status(200).json(livros)                
-        }catch(err){
-            res.status(500).json({Erro: `Erro interno: ${err}`})
             /*sobre os status
              200 = OK
              201 = novo criado
@@ -17,9 +10,33 @@ router.get("/",async (req, res)=>{
              400 = invalido
              404 = não encontrado
              500 = erro interno
-            */    
+            */   
+
+router.get("/",async (req, res)=>{ 
+        try{  
+            const filtroquery = {}
+            const campo = req.query
+            for (const key in campo) {
+                if (!Object.hasOwn(campo, key)) continue; 
+                            //no primeiro loop, seria "titulo", mas como essa chave nao existe no objeto filtroquery, ao fazer = {}, a gente adiciona ela lá. Quem está fornecendo para esse objeto é o for in   
+                            //objeto[key]          → LER/acessar
+                            //objeto[key] = valor  → ESCREVER/atribuir
+                            if(key=="ano"){
+                                filtroquery[key] = campo[key]
+                            }else{
+                              filtroquery[key] = {
+                    $regex: campo[key],
+                    $options: "i" //torna case-insensitive
+                              }   
+                            }          
+            }      
+            const livros = await livro.find(filtroquery).populate("categoria").lean()
+            res.status(200).json(livros)                
+        }catch(err){
+            res.status(500).json({Erro: `Erro interno: ${err}`})
     }
 })
+
 router.get("/:id", async (req, res)=>{
     try{
         if(!mongoose.isValidObjectId(req.params.id)){
