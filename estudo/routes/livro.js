@@ -16,21 +16,29 @@ router.get("/",async (req, res)=>{
         try{  
             const filtroquery = {}
             const campo = req.query
+            const filtros = ["titulo", "autor", "ano", "descricao"]  
+            const control = ["limit", "sort", "page"]  
+            const guardar = {}
             for (const key in campo) {
-                if (!Object.hasOwn(campo, key)) continue; 
-                            //no primeiro loop, seria "titulo", mas como essa chave nao existe no objeto filtroquery, ao fazer = {}, a gente adiciona ela lá. Quem está fornecendo para esse objeto é o for in   
+                             //no primeiro loop, seria "titulo", mas como essa chave nao existe no objeto filtroquery, ao fazer = {}, a gente adiciona ela lá. Quem está fornecendo para esse objeto é o for in   
                             //objeto[key]          → LER/acessar
-                            //objeto[key] = valor  → ESCREVER/atribuir
+                            //objeto[key] = valor  → ESCREVER/atribuir     
+                if(control.includes(key)){
+                    guardar[key] = campo[key]
+                }else if(filtros.includes(key)){
                             if(key=="ano"){
-                                filtroquery[key] = campo[key]
+                                filtroquery[key] = campo[key] //ex: filtroquery[titulo] = campo[titulo]
                             }else{
                               filtroquery[key] = {
                     $regex: campo[key],
                     $options: "i" //torna case-insensitive
                               }   
-                            }          
+                            }  
+                }else{
+                   return res.status(400).json({mensagem: "Campo inexistente"})
+                }                     
             }      
-            const livros = await livro.find(filtroquery).populate("categoria").lean()
+            const livros = await livro.find(filtroquery).populate("categoria").limit(guardar.limit).lean()
             res.status(200).json(livros)                
         }catch(err){
             res.status(500).json({Erro: `Erro interno: ${err}`})
