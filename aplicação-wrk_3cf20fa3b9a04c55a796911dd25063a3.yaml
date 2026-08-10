@@ -7,12 +7,12 @@ meta:
   modified: 1785849053395
   description: ""
 collection:
-  - url: http://localhost:3333/livros
+  - url: http://localhost:3333/livros?autor=curt&limit=2
     name: livros
     meta:
       id: req_f0cb33ce71f04e199019d603bc5798df
       created: 1785760904581
-      modified: 1785850455201
+      modified: 1786373626385
       isPrivate: false
       description: ""
       sortKey: -1785760904581
@@ -39,20 +39,20 @@ collection:
     meta:
       id: req_28562c4e19104de987b2a853a4da2c8c
       created: 1785761312254
-      modified: 1785847314615
+      modified: 1786370825358
       isPrivate: false
       description: ""
       sortKey: -1785760699679.5
     method: POST
     body:
       mimeType: application/json
-      text: |-
+      text: >-
         {
-        	"titulo": "Gorilas",
-        	"autor": "Curt Kobain",
-        	"ano": 2025,
-        	"descricao": "vai neymar",
-        	"categoria": "6a71dcdc4b7c4d9bc94b61bf"
+        	"titulo": "Como mamar o pauzão do seu melhor amigo sem viadagem",
+        	"autor": "Alexandre de Moraes",
+        	"ano": 1000,
+        	"descricao": "O guia definitivo para fortalecer o vínculo com o seu brother sem queimar o filme. Esqueça o formalismo: aqui o papo é reto sobre os limites da camaradagem, provando com regras claras que um apoio mútuo entre parças não muda o status de heterotop de ninguém. Se tá de meia, não é golpe.",
+        	"categoria": "6a79d9c34d5c1a18451e2529"
         }
     headers:
       - name: Content-Type
@@ -70,7 +70,7 @@ collection:
     meta:
       id: req_e7c6c74782e846109ca7afe40ed66f1c
       created: 1785761341074
-      modified: 1785847002162
+      modified: 1786370497766
       isPrivate: false
       description: ""
       sortKey: -1785760597228.75
@@ -79,7 +79,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"nome":"Biologia"
+        	"nome":"Heterossexualismo"
         }
     headers:
       - name: Content-Type
@@ -229,12 +229,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/livros/6a71de1454f9c0c5dcf9c332
+  - url: http://localhost:3333/livros/6a79db124d5c1a18451e252a
     name: livros
     meta:
       id: req_66be2f8e89004b158702265ef4a86e1e
       created: 1785847610557
-      modified: 1785850872195
+      modified: 1786373595212
       isPrivate: false
       description: ""
       sortKey: -1785760513987.5156
@@ -243,7 +243,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"titulo": "A fantástica casa da putaria"
+        	"autor": "Curt Kobain"
         }
     headers:
       - name: Content-Type
