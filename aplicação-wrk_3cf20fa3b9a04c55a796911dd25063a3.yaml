@@ -7,12 +7,12 @@ meta:
   modified: 1785849053395
   description: ""
 collection:
-  - url: http://localhost:3333/livros?autor=curt&limit=2
+  - url: http://localhost:3333/livros?autor=curt&sort=ano
     name: livros
     meta:
       id: req_f0cb33ce71f04e199019d603bc5798df
       created: 1785760904581
-      modified: 1786373626385
+      modified: 1786452595835
       isPrivate: false
       description: ""
       sortKey: -1785760904581
@@ -21,7 +21,6 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"_id": ""
         }
     headers:
       - name: Content-Type
@@ -39,20 +38,20 @@ collection:
     meta:
       id: req_28562c4e19104de987b2a853a4da2c8c
       created: 1785761312254
-      modified: 1786370825358
+      modified: 1786452005807
       isPrivate: false
       description: ""
       sortKey: -1785760699679.5
     method: POST
     body:
       mimeType: application/json
-      text: >-
+      text: |-
         {
-        	"titulo": "Como mamar o pauzão do seu melhor amigo sem viadagem",
-        	"autor": "Alexandre de Moraes",
-        	"ano": 1000,
-        	"descricao": "O guia definitivo para fortalecer o vínculo com o seu brother sem queimar o filme. Esqueça o formalismo: aqui o papo é reto sobre os limites da camaradagem, provando com regras claras que um apoio mútuo entre parças não muda o status de heterotop de ninguém. Se tá de meia, não é golpe.",
-        	"categoria": "6a79d9c34d5c1a18451e2529"
+        	"titulo": "Como impressionar pessoas e mandalas pra puta que pariu",
+        	"autor": "Curt Kobain",
+        	"ano": 2017,
+        	"descricao": "cucucucucucucucucuc",
+        	"categoria": "6a79d82b4d5c1a18451e2524"
         }
     headers:
       - name: Content-Type
@@ -119,12 +118,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/categorias/
+  - url: http://localhost:3333/categorias/6a79d9c34d5c1a18451e2529
     name: categorias
     meta:
       id: req_81038f9b1f4e4d12aec6a213e143086f
       created: 1785761357313
-      modified: 1785766966960
+      modified: 1786452979439
       isPrivate: false
       description: ""
       sortKey: -1785760546003.375
@@ -133,7 +132,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"nome": "computaria"
+        	"nome": "sociologia"
         }
     headers:
       - name: Content-Type
@@ -234,7 +233,7 @@ collection:
     meta:
       id: req_66be2f8e89004b158702265ef4a86e1e
       created: 1785847610557
-      modified: 1786373595212
+      modified: 1786452736409
       isPrivate: false
       description: ""
       sortKey: -1785760513987.5156
@@ -243,7 +242,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"autor": "Curt Kobain"
+        	"titulo": "como mexer o pau sem piscar o cu"
         }
     headers:
       - name: Content-Type
