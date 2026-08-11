@@ -24,7 +24,11 @@ router.get("/",async (req, res)=>{
                             //objeto[key]          → LER/acessar
                             //objeto[key] = valor  → ESCREVER/atribuir     
                 if(control.includes(key)){
-                    guardar[key] = campo[key]
+                    if(key=="sort"){
+                        if(campo[key]!="ano"){
+                            return res.status(400).json({mensagem: "Coloque um valor válido a ordenar"})
+                        }   
+                    }
                 }else if(filtros.includes(key)){
                             if(key=="ano"){
                                 filtroquery[key] = campo[key] //ex: filtroquery[titulo] = campo[titulo]
