@@ -38,7 +38,7 @@ router.get("/",async (req, res)=>{
                    return res.status(400).json({mensagem: "Campo inexistente"})
                 }                     
             }      
-            const livros = await livro.find(filtroquery).populate("categoria").limit(guardar.limit).lean()
+            const livros = await livro.find(filtroquery).populate("categoria").limit(guardar.limit).sort(guardar.sort).lean()
             res.status(200).json(livros)                
         }catch(err){
             res.status(500).json({Erro: `Erro interno: ${err}`})
