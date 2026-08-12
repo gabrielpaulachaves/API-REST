@@ -27,7 +27,11 @@ router.get("/",async (req, res)=>{
                     if(key=="sort"){
                         if(campo[key]!="ano"){
                             return res.status(400).json({mensagem: "Coloque um valor válido a ordenar"})
-                        }   
+                        }  else{
+                            guardar[key] = campo[key]
+                        } 
+                    }else{ 
+                        guardar[key] = campo[key]
                     }
                 }else if(filtros.includes(key)){
                             if(key=="ano"){
