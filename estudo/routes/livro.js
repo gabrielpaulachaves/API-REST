@@ -28,7 +28,11 @@ router.get("/",async (req, res)=>{
                         if(campo[key]!="ano"){
                             return res.status(400).json({mensagem: "Coloque um valor válido a ordenar"})
                         }  else{
-                            guardar[key] = campo[key]
+                            guardar[key] = {
+                                $sort:{
+                                    ordem: campo[key]
+                                }
+                            }
                         } 
                     }else{ 
                         guardar[key] = campo[key]
@@ -49,7 +53,8 @@ router.get("/",async (req, res)=>{
             const livros = await livro.find(filtroquery).populate("categoria").limit(guardar.limit).sort(guardar.sort).lean()
             res.status(200).json(livros)                
         }catch(err){
-            res.status(500).json({Erro: `Erro interno: ${err}`})
+            console.log(err)
+            res.status(500).json({Erro: `Erro interno`})
     }
 })
 
