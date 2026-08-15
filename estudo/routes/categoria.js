@@ -43,12 +43,14 @@ router.put("/:id", async (req, res)=>{
     try{
         const att = {
             nome: req.body.nome
-        }
-        const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
-        if(!dado){
+        }   
+        if(!req.params.id){
             return res.status(404).json({mensagem: "ID não existe"})
+        }else{
+            const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+            return res.status(200).json(dado)
         }
-       return res.status(200).json(dado)
+       
     }catch(err){   
         res.status(500).json({mensagem: "erro interno"})
     }

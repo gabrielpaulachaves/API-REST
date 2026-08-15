@@ -35,14 +35,19 @@ router.get("/",async (req, res)=>{
                             }else if(isNaN(ordem)){
                                 return res.status(400).json({mensagem: "Utilize 1 ou -1 para escolher a ordem"})
                             }else if(ordem != 1 && ordem != -1){
-                                sorted[campo[key]] = 1 
+                                return res.status(400).json({mensagem: "Utilize 1 ou -1 para escolher a ordem"}) 
                             }else{
-                            guardar[key] = campo[key]
-                            sorted[campo[key]] = ordem
+                            sorted[campo[key]] = ordem  //o .sort só recebe objeto, como eu quero enviar pra ele o campo que deve ser ordenado e a ordem (crescente ou decrescente), eu envio um objeto pra ele, {ano: 1 ou -1}
                         }
                         }                        
                     }else if(key=="limit"){
-
+                        if(isNaN(campo[key])){
+                            return res.status(400).json({mensagem: "Utilize número para limitar a quantidade a ser exibida"})
+                        }else if(campo[key] <= 0){
+                            return res.status(400).json({mensagem: "Só é possível utilizar valores maiores que 0 e inteiro"})
+                        }else{
+                            guardar[key] = campo[key]
+                        }
                     }
                         else{ 
                         guardar[key] = campo[key]
@@ -142,9 +147,25 @@ router.delete("/:id", async (req, res)=>{
 
 router.patch("/:id", async (req, res)=>{
     try{
+        const camposfiltro = ["titulo", "autor","ano", "descricao", "categoria"]
         const attparcial = req.body
-        const dadoparcial = await livro.findOneAndUpdate({_id: req.params.id}, attparcial, {new: true})
-        res.status(200).json(dadoparcial)
+        const att = {}  
+        if(!mongoose.isValidObjectId(req.params.id)){
+          return  res.status(400).json({mensagem: "Coloque um ID válido"})
+        }
+        for (const key in attparcial) {
+            if(!camposfiltro.includes(key)){
+                res.status(400).json({mensagem: "Campo não existente digitado"})
+            }else{
+                att[key] = attparcial[key]
+            } 
+        }
+        const dadoparcial = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true}) 
+        if(!dadoparcial){
+            return res.status(404).json({mensagem: "ID não encontrado"})
+        }else{ 
+        res.status(200).json(dadoparcial) 
+        }     
     }catch(err){
       res.status(500).json({mensagem: "erro interno"})  
     }
