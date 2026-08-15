@@ -17,24 +17,34 @@ router.get("/",async (req, res)=>{
             const filtroquery = {}
             const campo = req.query
             const filtros = ["titulo", "autor", "ano", "descricao"]  
-            const control = ["limit", "sort", "page"]  
+            const control = ["limit", "sort", "page"] 
+            const sorted = {}
+            const ordem = parseInt(campo.ordem)
             const guardar = {}
             for (const key in campo) {
                              //no primeiro loop, seria "titulo", mas como essa chave nao existe no objeto filtroquery, ao fazer = {}, a gente adiciona ela lá. Quem está fornecendo para esse objeto é o for in   
                             //objeto[key]          → LER/acessar
                             //objeto[key] = valor  → ESCREVER/atribuir     
-                if(control.includes(key)){
+                if(control.includes(key) || key == "ordem"){
                     if(key=="sort"){
                         if(campo[key]!="ano"){
                             return res.status(400).json({mensagem: "Coloque um valor válido a ordenar"})
                         }  else{
-                            guardar[key] = {
-                                $sort:{
-                                    ordem: campo[key]
-                                }
-                            }
-                        } 
-                    }else{ 
+                            if(!("ordem" in campo)){
+                                sorted[campo[key]] = 1
+                            }else if(isNaN(ordem)){
+                                return res.status(400).json({mensagem: "Utilize 1 ou -1 para escolher a ordem"})
+                            }else if(ordem != 1 && ordem != -1){
+                                sorted[campo[key]] = 1 
+                            }else{
+                            guardar[key] = campo[key]
+                            sorted[campo[key]] = ordem
+                        }
+                        }                        
+                    }else if(key=="limit"){
+
+                    }
+                        else{ 
                         guardar[key] = campo[key]
                     }
                 }else if(filtros.includes(key)){
@@ -50,7 +60,7 @@ router.get("/",async (req, res)=>{
                    return res.status(400).json({mensagem: "Campo inexistente"})
                 }                     
             }      
-            const livros = await livro.find(filtroquery).populate("categoria").limit(guardar.limit).sort(guardar.sort).lean()
+            const livros = await livro.find(filtroquery).populate("categoria").limit(guardar.limit).sort(sorted).lean()
             res.status(200).json(livros)                
         }catch(err){
             console.log(err)
