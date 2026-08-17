@@ -32,6 +32,7 @@ router.get("/",async (req, res)=>{
                         }  else{
                             if(!("ordem" in campo)){
                                 sorted[campo[key]] = 1
+                                    //sorted: {ano: 1}
                             }else if(isNaN(ordem)){
                                 return res.status(400).json({mensagem: "Utilize 1 ou -1 para escolher a ordem"})
                             }else if(ordem != 1 && ordem != -1){
@@ -132,6 +133,9 @@ router.put("/:id", async (req, res)=>{
 
 router.delete("/:id", async (req, res)=>{
     try{
+        if(!mongoose.isValidObjectId(req.params.id)){
+            return res.status(400).json({mensagem: "ID inválido"})
+        }
         const del = await livro.findOneAndDelete({_id: req.params.id})
         if(!del){
             return res.status(404).json({mensagem: "ID não encontrado"})
@@ -155,7 +159,7 @@ router.patch("/:id", async (req, res)=>{
         }
         for (const key in attparcial) {
             if(!camposfiltro.includes(key)){
-                res.status(400).json({mensagem: "Campo não existente digitado"})
+              return res.status(400).json({mensagem: "Campo não existente digitado"})
             }else{
                 att[key] = attparcial[key]
             } 
