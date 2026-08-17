@@ -12,7 +12,7 @@ collection:
     meta:
       id: req_f0cb33ce71f04e199019d603bc5798df
       created: 1785760904581
-      modified: 1786452595835
+      modified: 1786628244843
       isPrivate: false
       description: ""
       sortKey: -1785760904581
@@ -38,7 +38,7 @@ collection:
     meta:
       id: req_28562c4e19104de987b2a853a4da2c8c
       created: 1785761312254
-      modified: 1786452005807
+      modified: 1786970402957
       isPrivate: false
       description: ""
       sortKey: -1785760699679.5
@@ -47,11 +47,11 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"titulo": "Como impressionar pessoas e mandalas pra puta que pariu",
-        	"autor": "Curt Kobain",
-        	"ano": 2017,
-        	"descricao": "cucucucucucucucucuc",
-        	"categoria": "6a79d82b4d5c1a18451e2524"
+        	"titulo": "",
+        	"autor": "",
+        	"ano": 2000,
+        	"descricao": "", 
+        	"categoria": ""
         }
     headers:
       - name: Content-Type
@@ -91,12 +91,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/categorias
+  - url: http://localhost:3333/categorias?sort=nome
     name: categorias
     meta:
       id: req_52072fef9a36428488efab708fdf6bc2
       created: 1785761349778
-      modified: 1785847307762
+      modified: 1786972343515
       isPrivate: false
       description: ""
       sortKey: -1785760802130.25
@@ -105,7 +105,6 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"_id": ""
         }
     headers:
       - name: Content-Type
@@ -181,7 +180,7 @@ collection:
     meta:
       id: req_3e5d02ca318343908d02e992fcf8dd1a
       created: 1785761412311
-      modified: 1785766898086
+      modified: 1786970273276
       isPrivate: false
       description: ""
       sortKey: -1785760507584.3438
