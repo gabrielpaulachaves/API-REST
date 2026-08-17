@@ -6,12 +6,39 @@ const cat = mongoose.model("categorias")
 
 router.get("/", async (req, res)=>{
         try{
-            const categoria = await cat.find().lean()
+            const campo = req.query
+            const controles = ["limit", "sort"]
+            const parametros = ["nome"]
+            const ordem = parseInt(campo.ordem)
+            const filtro = {}
+            for (const key in campo){
+                if(controles.includes(key)){
+                    if(key=="sort"){
+                        if(campo[key]!="nome"){
+                            return res.status(400).json({mensagem:"valor de sort inválido"})
+                        }else{
+                            if(ordem){
+                                if(isNaN(ordem)){
+                                    return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})
+                                }else if(ordem != 1 || ordem != -1){
+                                    return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})    
+                                }else if(!ordem){
+                                    filtro[campo[key]] = 1
+                                }else{
+                                 filtro[campo[key]] = ordem   
+                                }
+                            }  
+                        }
+                    }
+                }     
+            }
+            const categoria = await cat.find().sort(filtro).lean()
             res.status(200).json(categoria)                
         }catch(err){
             res.status(500).json({Erro: `Erro interno: ${err}`})
         }
 })
+
 router.get("/:id", async (req, res)=>{
     try{
         if(!mongoose.isValidObjectId(req.params.id)){
