@@ -5,21 +5,20 @@ require("../models/categoria")
 const cat = mongoose.model("categorias")
 
 router.get("/", async (req, res)=>{
-        try{
-            const campo = req.query
-            const controles = ["limit", "sort"]
-            const parametros = ["nome"]
-            const ordem = parseInt(campo.ordem)
-            const sorted = {}
-            const filtro = {}
-            const guardar = {}
-            for (const key in campo){
-                if(controles.includes(key)){
+    try{
+        const campo = req.query
+        const controles = ["limit", "sort"]
+        const parametros = ["nome"]
+        const ordem = parseInt(campo.ordem)
+        const sorted = {}
+        const filtro = {}
+        const guardar = {}
+        for (const key in campo){
+            if(controles.includes(key)){
                     if(key=="sort"){
                         if(campo[key]!="nome"){
                             return res.status(400).json({mensagem:"valor de sort inválido"})
                         }else{
-                            if(ordem){
                                 if(isNaN(ordem)){
                                     return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})
                                 }else if(ordem != 1 && ordem != -1){
@@ -29,7 +28,7 @@ router.get("/", async (req, res)=>{
                                 }else{
                                  sorted[campo[key]] = ordem   
                                 }
-                            }}
+                            }
                     }else if(key=="limit"){
                         if(isNaN(campo[key])){
                            return res.status(400).json({mensagem: "Digite apenas numeros"}) 
@@ -37,17 +36,17 @@ router.get("/", async (req, res)=>{
                            return res.status(400).json({mensagem: "Digite um numero maior que 0"}) 
                         }else{
                             guardar[key] = campo[key]
-                        }}
-                }else if(parametros.includes(key)){
+                        }
+                    }   
+            }else if(parametros.includes(key)){
                     filtro[key] = {
                         $regex: campo[key],
-                        $options: "i"
-                    }
-                }    
-            }
+                        $options: "i"}
+                    } 
             const categoria = await cat.find(filtro).limit(guardar.limit).sort(sorted).lean()
             res.status(200).json(categoria)                
-        }catch(err){
+        }
+    }catch(err){
             res.status(500).json({Erro: `Erro interno`})
         }
 })
