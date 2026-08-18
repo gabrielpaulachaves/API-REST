@@ -120,9 +120,10 @@ router.put("/:id", async (req, res)=>{
        } 
        const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
         if(!dado){
-            return res.status(404).json({mensagem: "ID não existe"})
-            
-        }       
+            return res.status(404).json({mensagem: "ID não existe"})    
+        }else if(!mongoose.isValidObjectId(req.params.id)){
+            return res.status(404).json({mensagem: "Coloque um ID inválido"})
+        }     
     return res.status(200).json(dado)
     }catch(err){
         res.status(500).json({mensagem: "Erro interno "+ err})
@@ -151,7 +152,7 @@ router.delete("/:id", async (req, res)=>{
 
 router.patch("/:id", async (req, res)=>{
     try{
-        const camposfiltro = ["titulo", "autor","ano", "descricao", "categoria"]
+        const camposfiltro = ["titulo", "autor", "ano", "descricao", "categoria"]
         const attparcial = req.body
         const att = {}  
         if(!mongoose.isValidObjectId(req.params.id)){

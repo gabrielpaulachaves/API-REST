@@ -10,7 +10,9 @@ router.get("/", async (req, res)=>{
             const controles = ["limit", "sort"]
             const parametros = ["nome"]
             const ordem = parseInt(campo.ordem)
+            const sorted = {}
             const filtro = {}
+            const guardar = {}
             for (const key in campo){
                 if(controles.includes(key)){
                     if(key=="sort"){
@@ -20,19 +22,30 @@ router.get("/", async (req, res)=>{
                             if(ordem){
                                 if(isNaN(ordem)){
                                     return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})
-                                }else if(ordem != 1 || ordem != -1){
+                                }else if(ordem != 1 && ordem != -1){
                                     return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})    
-                                }else if(!ordem){
-                                    filtro[campo[key]] = 1
+                                }else if(!("ordem" in campo)){
+                                    sorted[campo[key]] = 1
                                 }else{
-                                 filtro[campo[key]] = ordem   
+                                 sorted[campo[key]] = ordem   
                                 }
-                            }  
-                        }
+                            }}
+                    }else if(key=="limit"){
+                        if(isNaN(campo[key])){
+                           return res.status(400).json({mensagem: "Digite apenas numeros"}) 
+                        }else if(campo[key] <=0){
+                           return res.status(400).json({mensagem: "Digite um numero maior que 0"}) 
+                        }else{
+                            guardar[key] = campo[key]
+                        }}
+                }else if(parametros.includes(key)){
+                    filtro[key] = {
+                        $regex: campo[key],
+                        $options: "i"
                     }
-                }     
+                }    
             }
-            const categoria = await cat.find().sort(filtro).lean()
+            const categoria = await cat.find(filtro).limit(guardar.limit).sort(sorted).lean()
             res.status(200).json(categoria)                
         }catch(err){
             res.status(500).json({Erro: `Erro interno: ${err}`})
@@ -70,11 +83,14 @@ router.put("/:id", async (req, res)=>{
     try{
         const att = {
             nome: req.body.nome
-        }   
-        if(!req.params.id){
+        } 
+        const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+        if(!dado){
             return res.status(404).json({mensagem: "ID não existe"})
-        }else{
-            const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+        }else if(!mongoose.isValidObjectId(req.params.id)){
+            return res.status(404).json({mensagem: "Coloque um ID inválido"})
+        }
+        else{
             return res.status(200).json(dado)
         }
        
