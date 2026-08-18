@@ -48,7 +48,7 @@ router.get("/", async (req, res)=>{
             const categoria = await cat.find(filtro).limit(guardar.limit).sort(sorted).lean()
             res.status(200).json(categoria)                
         }catch(err){
-            res.status(500).json({Erro: `Erro interno: ${err}`})
+            res.status(500).json({Erro: `Erro interno`})
         }
 })
 
@@ -84,16 +84,15 @@ router.put("/:id", async (req, res)=>{
         const att = {
             nome: req.body.nome
         } 
+        
+        if(!mongoose.isValidObjectId(req.params.id)){
+            return res.status(400).json({mensagem: "Coloque um ID válido"})
+        }
         const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
         if(!dado){
             return res.status(404).json({mensagem: "ID não existe"})
-        }else if(!mongoose.isValidObjectId(req.params.id)){
-            return res.status(404).json({mensagem: "Coloque um ID inválido"})
-        }
-        else{
-            return res.status(200).json(dado)
-        }
-       
+        } 
+            return res.status(200).json(dado)     
     }catch(err){   
         res.status(500).json({mensagem: "erro interno"})
     }

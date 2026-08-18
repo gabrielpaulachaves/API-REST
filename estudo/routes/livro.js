@@ -89,7 +89,7 @@ router.get("/:id", async (req, res)=>{
            
     }catch(err){
         console.log(err)
-        res.status(500).json({Erro: `Erro interno: ${err}`})
+        res.status(500).json({Erro: `Erro interno`})
     }
 })
 
@@ -118,17 +118,17 @@ router.put("/:id", async (req, res)=>{
         descricao: req.body.descricao,
         categoria: req.body.categoria        
        } 
-       const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+        if(!mongoose.isValidObjectId(req.params.id)){
+            return res.status(400).json({mensagem: "Coloque um ID válido"})
+        }
+        const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
         if(!dado){
             return res.status(404).json({mensagem: "ID não existe"})    
-        }else if(!mongoose.isValidObjectId(req.params.id)){
-            return res.status(404).json({mensagem: "Coloque um ID inválido"})
-        }     
+        }    
     return res.status(200).json(dado)
     }catch(err){
-        res.status(500).json({mensagem: "Erro interno "+ err})
+        res.status(500).json({mensagem: "Erro interno"})
     } 
-
     //resultado teste forçando erro = 400 Bad Request   
 })
 
