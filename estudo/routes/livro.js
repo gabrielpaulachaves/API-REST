@@ -95,14 +95,42 @@ router.get("/:id", async (req, res)=>{
 
 router.post("/", async (req, res)=>{
     try{
-    const addlivro = {
-        titulo: req.body.titulo,
-        autor: req.body.autor,
-        ano: req.body.ano,
-        descricao: req.body.descricao,
-        categoria: req.body.categoria
+        const filtro = ["titulo", "autor", "ano", "descricao", "categoria"]
+        const newlivro = {}
+        const body = req.body
+    if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao" in body) || !("categoria" in body)){
+        return res.status(400).json({mensagem: "Campos em falta. Certifique-se de que os campos 'titulo', 'autor', 'ano', 'descricao' e 'categoria' estejam adicionados"})
+       }
+    for(const key in body) {
+       if(!filtro.includes(key)){
+        return res.status(400).json({mensagem: "Um campo não permitido foi adicionado"})
+       }else{
+         if(key=="titulo"){
+            newlivro[key] = body[key]
+        }
+        if(key=="autor"){
+           newlivro[key] = body[key] 
+        }
+        if(key=="ano"){
+            if(isNaN(body[key])){
+                return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
+            }else{
+               newlivro[key] = body[key]  
+            }
+        }
+        if(key=="descricao"){
+           newlivro[key] = body[key] 
+        }
+        if(key=="categoria"){
+            if(!mongoose.isValidObjectId(body[key])){
+                return res.status(400).json({mensagem: "ID inválido"})
+            }else{
+               newlivro[key] = body[key] 
+            }
+        }   
+       } 
     }
-    const novo = await new livro(addlivro).save()
+    const novo = await new livro(newlivro).save()
     res.status(201).json(novo)
     }catch(err){
         res.status(500).json({mensagem: "Erro interno"})

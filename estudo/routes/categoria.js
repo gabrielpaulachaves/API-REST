@@ -19,13 +19,14 @@ router.get("/", async (req, res)=>{
                         if(campo[key]!="nome"){
                             return res.status(400).json({mensagem:"valor de sort inválido"})
                         }else{
-                                if(isNaN(ordem)){
-                                    return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})
-                                }else if(ordem != 1 && ordem != -1){
-                                    return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})    
-                                }else if(!("ordem" in campo)){
+                                if(!("ordem" in campo)){
                                     sorted[campo[key]] = 1
                                 }else{
+                                  if(isNaN(ordem)){
+                                    return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})
+                                }if(ordem != 1 && ordem != -1){
+                                    return res.status(400).json({mensagem: "Digite 1 ou -1 para ordenar"})    
+                                }  
                                  sorted[campo[key]] = ordem   
                                 }
                             }
@@ -42,10 +43,10 @@ router.get("/", async (req, res)=>{
                     filtro[key] = {
                         $regex: campo[key],
                         $options: "i"}
-                    } 
-            const categoria = await cat.find(filtro).limit(guardar.limit).sort(sorted).lean()
-            res.status(200).json(categoria)                
+                    }                
         }
+        const categoria = await cat.find(filtro).limit(guardar.limit).sort(sorted).lean()
+            res.status(200).json(categoria)  
     }catch(err){
             res.status(500).json({Erro: `Erro interno`})
         }
