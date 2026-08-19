@@ -7,12 +7,12 @@ meta:
   modified: 1785849053395
   description: ""
 collection:
-  - url: http://localhost:3333/livros?autor=curt&sort=ano
+  - url: http://localhost:3333/livros?
     name: livros
     meta:
       id: req_f0cb33ce71f04e199019d603bc5798df
       created: 1785760904581
-      modified: 1786628244843
+      modified: 1787143236853
       isPrivate: false
       description: ""
       sortKey: -1785760904581
@@ -38,7 +38,7 @@ collection:
     meta:
       id: req_28562c4e19104de987b2a853a4da2c8c
       created: 1785761312254
-      modified: 1786970402957
+      modified: 1787145728731
       isPrivate: false
       description: ""
       sortKey: -1785760699679.5
@@ -47,11 +47,11 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"titulo": "",
-        	"autor": "",
-        	"ano": 2000,
-        	"descricao": "", 
-        	"categoria": ""
+        	"titulo": "sigma",
+        	"autor": "f2f2",
+        	"ano": "2069",
+        	"descricao": "Seu cavalo ta doente? fodase", 
+        	"categoria": "6a85a28b62c23cd82fe15666"
         }
     headers:
       - name: Content-Type
@@ -69,7 +69,7 @@ collection:
     meta:
       id: req_e7c6c74782e846109ca7afe40ed66f1c
       created: 1785761341074
-      modified: 1786370497766
+      modified: 1787142808603
       isPrivate: false
       description: ""
       sortKey: -1785760597228.75
@@ -78,7 +78,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"nome":"Heterossexualismo"
+        	"nome":"Romance"
         }
     headers:
       - name: Content-Type
@@ -91,12 +91,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/categorias?sort=nome
+  - url: http://localhost:3333/categorias?
     name: categorias
     meta:
       id: req_52072fef9a36428488efab708fdf6bc2
       created: 1785761349778
-      modified: 1786972343515
+      modified: 1787142750208
       isPrivate: false
       description: ""
       sortKey: -1785760802130.25
@@ -227,12 +227,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/livros/6a79db124d5c1a18451e252a
+  - url: http://localhost:3333/livros/6a85a38862c23cd82fe1566b
     name: livros
     meta:
       id: req_66be2f8e89004b158702265ef4a86e1e
       created: 1785847610557
-      modified: 1786452736409
+      modified: 1787143269775
       isPrivate: false
       description: ""
       sortKey: -1785760513987.5156
@@ -241,7 +241,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"titulo": "como mexer o pau sem piscar o cu"
+        	"descricao": "Quer aprender fazer sexo?"
         }
     headers:
       - name: Content-Type
