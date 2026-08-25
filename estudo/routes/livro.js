@@ -101,15 +101,23 @@ router.post("/", async (req, res)=>{
     if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao" in body) || !("categoria" in body)){
         return res.status(400).json({mensagem: "Campos em falta. Certifique-se de que os campos 'titulo', 'autor', 'ano', 'descricao' e 'categoria' estejam adicionados"})
        }
+       
     for(const key in body) {
        if(!filtro.includes(key)){
         return res.status(400).json({mensagem: "Um campo não permitido foi adicionado"})
        }else{
-        if(body[key].trim() == ""){
+        if(key == "titulo" || key == "autor" || key == "descricao"){
+            if(typeof(body[key]) == "string"){
+               if(body[key].trim() == ""){
            return res.status(400).json({mensagem: "Não foi adicionado valor a algum campo"}) 
         }else{
           newlivro[key] = body[key]   
+        }  
+            }else{
+             return res.status(400).json({mensagem: "O valor de algum campo não é permitido"})    
+            }
         }
+       
         if(key=="ano"){
             if(isNaN(body[key])){
                 return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
