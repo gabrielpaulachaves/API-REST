@@ -105,27 +105,17 @@ router.post("/", async (req, res)=>{
        if(!filtro.includes(key)){
         return res.status(400).json({mensagem: "Um campo não permitido foi adicionado"})
        }else{
-        if(key.trim()){
-        return res.status(400).json({mensagem:"algum campo está vazio"})
-       }
-         if(key=="titulo"){
-            newlivro[key] = body[key]
-        }
-        if(key=="autor"){
-           newlivro[key] = body[key] 
+        if(body[key].trim() == ""){
+           return res.status(400).json({mensagem: "Não foi adicionado valor a algum campo"}) 
+        }else{
+          newlivro[key] = body[key]   
         }
         if(key=="ano"){
             if(isNaN(body[key])){
                 return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
-            }else if(key.parse() == false){
-                return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
-            }
-            else{
+            }else{
                newlivro[key] = body[key]  
             }
-        }
-        if(key=="descricao"){
-           newlivro[key] = body[key] 
         }
         if(key=="categoria"){
             if(!mongoose.isValidObjectId(body[key])){
