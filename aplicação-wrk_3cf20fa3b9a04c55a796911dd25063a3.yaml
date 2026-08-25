@@ -38,7 +38,7 @@ collection:
     meta:
       id: req_28562c4e19104de987b2a853a4da2c8c
       created: 1785761312254
-      modified: 1787145728731
+      modified: 1787664339151
       isPrivate: false
       description: ""
       sortKey: -1785760699679.5
@@ -47,9 +47,9 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"titulo": "sigma",
-        	"autor": "f2f2",
-        	"ano": "2069",
+        	"titulo": "wewf",
+        	"autor": "ewgfwdfsd",
+        	"ano": 2007,
         	"descricao": "Seu cavalo ta doente? fodase", 
         	"categoria": "6a85a28b62c23cd82fe15666"
         }
