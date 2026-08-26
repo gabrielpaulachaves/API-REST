@@ -119,12 +119,22 @@ router.post("/", async (req, res)=>{
         }
        
         if(key=="ano"){
+
             if(isNaN(body[key])){
                 return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
-            }else{
-               newlivro[key] = body[key]  
             }
+            if(body[key] > 2026 || body[key] == 0){
+                return res.status(400).json({mensagem: "Digite um ano válido"})
+            }
+            if(body[key] == null){
+                return res.status(400).json({mensagem: "Digite um ano válido"})
+            }
+            if(!Number.isInteger(body[key])){
+                return res.status(400).json({mensagem: "Não é permitido anos decimais"})
+            }
+               newlivro[key] = body[key]  
         }
+
         if(key=="categoria"){
             if(!mongoose.isValidObjectId(body[key])){
                 return res.status(400).json({mensagem: "ID inválido"})
