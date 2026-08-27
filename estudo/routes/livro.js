@@ -2,6 +2,8 @@ const express = require("express")
 const mongoose = require("mongoose")
 const router = express.Router()
 require("../models/livros")
+require("../models/categoria")
+const categoriapop = mongoose.model("categorias")
 const livro = mongoose.model("livros")
             /*sobre os status
              200 = OK
@@ -103,6 +105,7 @@ router.post("/", async (req, res)=>{
        }
        
     for(const key in body) {
+        
        if(!filtro.includes(key)){
         return res.status(400).json({mensagem: "Um campo não permitido foi adicionado"})
        }else{
@@ -119,32 +122,35 @@ router.post("/", async (req, res)=>{
         }
        
         if(key=="ano"){
-
-            if(isNaN(body[key])){
+            if(typeof(body[key]) == "object" || typeof(body[key]) == "boolean"){
+               return res.status(400).json({mensagem: "Tipagem de ano inválida"}) 
+            }
+            const numeru = Number(body[key])
+            if(isNaN(numeru)){
                 return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
             }
-            if(body[key] > 2026 || body[key] == 0){
+            if(numeru > 2026 || numeru == 0){
                 return res.status(400).json({mensagem: "Digite um ano válido"})
             }
-            if(body[key] == null){
-                return res.status(400).json({mensagem: "Digite um ano válido"})
-            }
-            if(!Number.isInteger(body[key])){
+            if(!Number.isInteger(numeru)){
                 return res.status(400).json({mensagem: "Não é permitido anos decimais"})
             }
-               newlivro[key] = body[key]  
+               newlivro[key] = numeru  
         }
 
         if(key=="categoria"){
             if(!mongoose.isValidObjectId(body[key])){
                 return res.status(400).json({mensagem: "ID inválido"})
-            }else{
-               newlivro[key] = body[key] 
             }
+            const cate = await categoriapop.findById(body[key])
+            if(cate == null){
+                return res.status(400).json({mensagem: "ID não encontrado"})
+            }
+                newlivro[key] = body[key]        
         }   
-       } 
-       
+       }    
     }
+    
     const novo = await new livro(newlivro).save()
     res.status(201).json(novo)
     }catch(err){
