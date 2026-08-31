@@ -160,25 +160,68 @@ router.post("/", async (req, res)=>{
 
 router.put("/:id", async (req, res)=>{
     try{
-        const att = {
-        titulo: req.body.titulo,
-        autor: req.body.autor,
-        ano: req.body.ano,
-        descricao: req.body.descricao,
-        categoria: req.body.categoria        
-       } 
+        const filtro = ["titulo", "autor", "ano", "descricao", "categoria"]
+        const att = req.body
+        const novoobj = {}
         if(!mongoose.isValidObjectId(req.params.id)){
             return res.status(400).json({mensagem: "Coloque um ID válido"})
         }
-        const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+        
+    for (const key in att) {
+        if(!filtro.includes(key)){
+                return res.status(400).json({mensagem: "Há campos não permitidos"})
+            }else{
+            if(key == "titulo" || key == "autor" || key == "descricao"){
+               if(typeof(att[key]) == "string"){
+                if(att[key].trim() == ""){
+                    return res.status(400).json({mensagem: "Há campos vazios"})
+                }else{
+                  novoobj[key] = att[key]  
+                }
+               }else{
+                return res.status(400).json({mensagem: "O valor de algum campo não é permitido"})
+               }    
+            }
+
+            if(key == "ano"){
+                if(typeof(att[key]) == "object" || typeof(att[key]) == "boolean"){
+                    return res.status(400).json({mensagem: "Tipagem de ano inválida"})
+                }
+                const convert = Number(att[key])
+                if(isNaN(convert)){
+                    return res.status(400).json({mensagem: "Valor de ano inválido"})
+                }
+                if(convert > 2026 || convert == 0){
+                    return res.status(400).json({mensagem: "Coloque um ano que não seja maior que o ano atual e diferente de 0"})
+                }
+                if(!Number.isInteger(convert)){
+                   return res.status(400).json({mensagem: "Coloque valores inteiros"}) 
+                }
+               novoobj[key] = att[key] 
+            } 
+
+            if(key == "categoria"){
+                if(!mongoose.isValidObjectId(att[key])){
+                    return res.status(400).json({mensagem: "ID de categoria inválido"})
+                }
+                const catte = await categoriapop.findById(att[key])
+                if(catte == null){
+                    return res.status(400).json({mensagem: "essa categoria não existe"})
+                }
+                novoobj[key] = att[key]
+            }   
+        }
+    }
+
+        const dado = await livro.findOneAndUpdate({_id: req.params.id}, novoobj, {new: true})
         if(!dado){
             return res.status(404).json({mensagem: "ID não existe"})    
-        }    
-    return res.status(200).json(dado)
+        }else{
+          return res.status(200).json(dado)  
+        }       
     }catch(err){
         res.status(500).json({mensagem: "Erro interno"})
-    } 
-    //resultado teste forçando erro = 400 Bad Request   
+    }   
 })
 
 router.delete("/:id", async (req, res)=>{
@@ -211,9 +254,22 @@ router.patch("/:id", async (req, res)=>{
             if(!camposfiltro.includes(key)){
               return res.status(400).json({mensagem: "Campo não existente digitado"})
             }else{
+                if(key == "titulo" || key == "autor" || key == "descricao"){
+                if(typeof(attparcial[key]) == "string"){
+                    if(attparcial[key].trim() == ""){
+                        return res.status(400).json({mensagem: "Há campos vazios"})
+                    }}
+            }else{
                 att[key] = attparcial[key]
-            } 
+            }
         }
+        if(key == "ano"){
+            if(!typeof(attparcial[key]) == "object" || !typeof(attparcial[key]) == "boolean"){
+                    return res.status(400).json({mensagem: "Tipagem de ano inválida"})
+            }
+        }
+        }
+
         const dadoparcial = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true}) 
         if(!dadoparcial){
             return res.status(404).json({mensagem: "ID não encontrado"})
