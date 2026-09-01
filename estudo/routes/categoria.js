@@ -1,5 +1,6 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const { jsx } = require("react/jsx-runtime")
 const router = express.Router()
 require("../models/categoria")
 const cat = mongoose.model("categorias")
@@ -69,10 +70,25 @@ router.get("/:id", async (req, res)=>{
 
 router.post("/", async (req, res)=>{
         try{
-            const addcat = {
-                nome: req.body.nome
+            const addcat = req.body
+           
+            if(!Object.hasOwn(addcat, "nome")){
+                return res.status(400).json({mensagem: "Só é permitido o campo 'nome'"})
             }
-         const novo = await new cat(addcat).save()
+            const verificando = Object.keys(addcat)
+            if(verificando.length >1){
+                return res.status(400).json({mensagem: "Só é permitido o campo 'nome'"})
+            }
+            if(typeof(addcat.nome) == "string"){
+                if(addcat.nome.trim() == ""){
+                 return res.status(400).json({mensagem: "Não foi adicionado valor"})   
+                }    
+            }else{
+               return res.status(400).json({mensagem: "Só é permitido texto"}) 
+            }
+            const novocat = {nome: addcat.nome}
+
+         const novo = await new cat(novocat).save()
          res.status(201).json(novo)  
         }catch(err){
             res.status(500).json({mensagem: "erro interno"})

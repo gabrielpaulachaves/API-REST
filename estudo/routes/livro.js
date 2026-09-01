@@ -144,7 +144,7 @@ router.post("/", async (req, res)=>{
             }
             const cate = await categoriapop.findById(body[key])
             if(cate == null){
-                return res.status(400).json({mensagem: "ID não encontrado"})
+                return res.status(404).json({mensagem: "Categoria não encontrado"})
             }
                 newlivro[key] = body[key]        
         }   
@@ -206,7 +206,7 @@ router.put("/:id", async (req, res)=>{
                 }
                 const catte = await categoriapop.findById(att[key])
                 if(catte == null){
-                    return res.status(400).json({mensagem: "essa categoria não existe"})
+                    return res.status(404).json({mensagem: "essa categoria não existe"})
                 }
                 novoobj[key] = att[key]
             }   
@@ -246,10 +246,12 @@ router.patch("/:id", async (req, res)=>{
     try{
         const camposfiltro = ["titulo", "autor", "ano", "descricao", "categoria"]
         const attparcial = req.body
-        const att = {}  
+        const att = {} 
+
         if(!mongoose.isValidObjectId(req.params.id)){
           return  res.status(400).json({mensagem: "Coloque um ID válido"})
         }
+
         for (const key in attparcial) {
             if(!camposfiltro.includes(key)){
               return res.status(400).json({mensagem: "Campo não existente digitado"})
@@ -267,6 +269,28 @@ router.patch("/:id", async (req, res)=>{
             if(!typeof(attparcial[key]) == "object" || !typeof(attparcial[key]) == "boolean"){
                     return res.status(400).json({mensagem: "Tipagem de ano inválida"})
             }
+            const converter = Number(attparcial[key])
+            if(isNaN(converter)){
+                return res.status(400).json({mensagem: "Ano não é um número"})
+            }
+            if(converter > 2026 || converter == 0){
+                return res.status(400).json({mensagem: "Não é permitido ano maior que o ano atual ou igual a 0"})
+            }
+            if(!Number.isInteger(converter)){
+                return res.status(400).json({mensagem: "Não é permitido ano com valor decimal"})
+            }
+            att[key] = attparcial[key]
+        }
+
+        if(key == "categoria"){
+            if(!mongoose.isValidObjectId(attparcial[key])){
+                return res.status(400).json({mensagem: "ID da categoria inválida"})
+            }
+            const catebuscar = await categoriapop.findById(attparcial[key])
+            if(catebuscar == null){
+                return res.status(404).json({mensagem: "Categoria não existe"})
+            }
+            att[key] = attparcial[key]
         }
         }
 
