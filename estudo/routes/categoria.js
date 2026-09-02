@@ -97,14 +97,28 @@ router.post("/", async (req, res)=>{
 
 router.put("/:id", async (req, res)=>{
     try{
-        const att = {
-            nome: req.body.nome
-        } 
+        const att = req.body
         
         if(!mongoose.isValidObjectId(req.params.id)){
             return res.status(400).json({mensagem: "Coloque um ID válido"})
         }
-        const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+        if(!Object.hasOwn(att, "nome")){
+            return res.status(400).json({mensagem: "Só é permitido apenas o campo 'nome'"})
+        }
+        const arr = Object.keys(att)
+        if(arr.length > 1){
+            return res.status(400).json({mensagem: "Só é permitido apenas o campo 'nome'"})
+        }
+        if(typeof(att.nome) == "string"){
+            if(att.nome.trim() == ""){
+             return res.status(400).json({mensagem: "O campo 'nome' está vazio"})   
+            }
+        }else{
+            return res.status(400).json({mensagem: "Tipo de valor para 'nome' inválido"})
+        }
+        const novoput = {nome: att.nome}
+
+        const dado = await cat.findOneAndUpdate({_id: req.params.id}, novoput, {new: true})
         if(!dado){
             return res.status(404).json({mensagem: "ID não existe"})
         } 
