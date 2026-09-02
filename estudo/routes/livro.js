@@ -19,7 +19,7 @@ router.get("/",async (req, res)=>{
             const filtroquery = {}
             const campo = req.query
             const filtros = ["titulo", "autor", "ano", "descricao"]  
-            const control = ["limit", "sort", "page"] 
+            const control = ["limit", "sort"] 
             const sorted = {}
             const ordem = parseInt(campo.ordem)
             const guardar = {}
@@ -260,13 +260,16 @@ router.patch("/:id", async (req, res)=>{
                 if(typeof(attparcial[key]) == "string"){
                     if(attparcial[key].trim() == ""){
                         return res.status(400).json({mensagem: "Há campos vazios"})
-                    }}
+                    }
+                }else{
+                        return res.status(400).json({mensagem: "só são permitido texto nos campos 'titulo', 'autor' e 'descricao' "})
+                    }
             }else{
                 att[key] = attparcial[key]
             }
         }
         if(key == "ano"){
-            if(!typeof(attparcial[key]) == "object" || !typeof(attparcial[key]) == "boolean"){
+            if(typeof(attparcial[key]) == "object" || typeof(attparcial[key]) == "boolean"){
                     return res.status(400).json({mensagem: "Tipagem de ano inválida"})
             }
             const converter = Number(attparcial[key])
@@ -279,7 +282,7 @@ router.patch("/:id", async (req, res)=>{
             if(!Number.isInteger(converter)){
                 return res.status(400).json({mensagem: "Não é permitido ano com valor decimal"})
             }
-            att[key] = attparcial[key]
+            att[key] = converter
         }
 
         if(key == "categoria"){
