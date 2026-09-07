@@ -136,7 +136,7 @@ router.put("/:id", async (req, res)=>{
 router.delete("/:id", async (req, res)=>{
     try{
         if(!mongoose.isValidObjectId(req.params.id)){
-           return res.status(404).json({mensagem: "Coloque um ID válido"}) 
+           return res.status(400).json({mensagem: "Coloque um ID válido"}) 
         }
         const del = await cat.findOneAndDelete({_id:req.params.id})
         if(!del){

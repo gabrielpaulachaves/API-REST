@@ -263,6 +263,8 @@ router.patch("/:id", async (req, res)=>{
                 if(typeof(attparcial[key]) == "string"){
                     if(attparcial[key].trim() == ""){
                         return res.status(400).json({mensagem: "Há campos vazios"})
+                    }else{
+                        att[key] = attparcial[key]
                     }
                 }else{
                         return res.status(400).json({mensagem: "só são permitido texto nos campos 'titulo', 'autor' e 'descricao' "})
