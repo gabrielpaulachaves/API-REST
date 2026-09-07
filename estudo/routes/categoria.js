@@ -31,12 +31,15 @@ router.get("/", async (req, res)=>{
                                 }
                             }
                     }else if(key=="limit"){
+                        const limitcat = Number(campo[key])
                         if(isNaN(campo[key])){
                            return res.status(400).json({mensagem: "Digite apenas numeros"}) 
                         }else if(campo[key] <=0){
                            return res.status(400).json({mensagem: "Digite um numero maior que 0"}) 
+                        }else if(!Number.isInteger(limitcat)){
+                            return res.status(400).json({mensagem: "Digite um numero inteiro"}) 
                         }else{
-                            guardar[key] = campo[key]
+                            guardar[key] = limitcat
                         }
                     }   
             }else if(parametros.includes(key)){

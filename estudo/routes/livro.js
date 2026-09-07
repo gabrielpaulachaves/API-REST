@@ -44,12 +44,15 @@ router.get("/",async (req, res)=>{
                         }
                         }                        
                     }else if(key=="limit"){
-                        if(isNaN(campo[key])){
+                        const limitnumber = Number(campo[key])
+                        if(isNaN(limitnumber)){
                             return res.status(400).json({mensagem: "Utilize número para limitar a quantidade a ser exibida"})
-                        }else if(campo[key] <= 0){
+                        }else if(limitnumber <= 0){
                             return res.status(400).json({mensagem: "Só é possível utilizar valores maiores que 0 e inteiro"})
+                        }else if(!Number.isInteger(limitnumber)){
+                            return res.status(400).json({mensagem: "Só é possível utilizar valores inteiros"})
                         }else{
-                            guardar[key] = campo[key]
+                            guardar[key] = limitnumber
                         }
                     }
                         else{ 
