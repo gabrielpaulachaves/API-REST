@@ -1,5 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const categoriapop = mongoose.model("categorias")
+const livro = mongoose.model("livros")
 
 function validar(val){
     const filtro = val
@@ -58,10 +60,12 @@ if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao
         }   
        }    
     }
+    req.newli = newli
     next()
         }
-        catch{
+        catch(err){
             res.status(500).json({mensagem: "Erro interno"})
+            console.log(err)
         }
     }
 

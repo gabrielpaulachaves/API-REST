@@ -101,61 +101,8 @@ router.get("/:id", async (req, res)=>{
 
 router.post("/", middles(["titulo", "autor", "ano", "descricao", "categoria"]), async (req, res)=>{
     try{
-        const filtro = ["titulo", "autor", "ano", "descricao", "categoria"]
-        const newlivro = {}
-        const body = req.body
-    if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao" in body) || !("categoria" in body)){
-        return res.status(400).json({mensagem: "Campos em falta. Certifique-se de que os campos 'titulo', 'autor', 'ano', 'descricao' e 'categoria' estejam adicionados"})
-       }
-       
-    for(const key in body) {
-        
-       if(!filtro.includes(key)){
-        return res.status(400).json({mensagem: "Um campo não permitido foi adicionado"})
-       }else{
-        if(key == "titulo" || key == "autor" || key == "descricao"){
-            if(typeof(body[key]) == "string"){
-               if(body[key].trim() == ""){
-           return res.status(400).json({mensagem: "Não foi adicionado valor a algum campo"}) 
-        }else{
-          newlivro[key] = body[key]   
-        }  
-            }else{
-             return res.status(400).json({mensagem: "O valor de algum campo não é permitido"})    
-            }
-        }
-       
-        if(key=="ano"){
-            if(typeof(body[key]) == "object" || typeof(body[key]) == "boolean"){
-               return res.status(400).json({mensagem: "Tipagem de ano inválida"}) 
-            }
-            const numeru = Number(body[key])
-            if(isNaN(numeru)){
-                return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
-            }
-            if(numeru > 2026 || numeru == 0){
-                return res.status(400).json({mensagem: "Digite um ano válido"})
-            }
-            if(!Number.isInteger(numeru)){
-                return res.status(400).json({mensagem: "Não é permitido anos decimais"})
-            }
-               newlivro[key] = numeru  
-        }
-
-        if(key=="categoria"){
-            if(!mongoose.isValidObjectId(body[key])){
-                return res.status(400).json({mensagem: "ID inválido"})
-            }
-            const cate = await categoriapop.findById(body[key])
-            if(cate == null){
-                return res.status(404).json({mensagem: "Categoria não encontrado"})
-            }
-                newlivro[key] = body[key]        
-        }   
-       }    
-    }
-    
-    const novo = await new livro(newlivro).save()
+    const newli = req.newli
+    const novo = await new livro(newli).save()
     res.status(201).json(novo)
     }catch(err){
         res.status(500).json({mensagem: "Erro interno"})
