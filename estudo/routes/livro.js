@@ -2,6 +2,8 @@ const express = require("express")
 const mongoose = require("mongoose")
 const router = express.Router()
 require("../models/livros")
+require("../models/categoria")
+const categoriapop = mongoose.model("categorias")
 const livro = mongoose.model("livros")
             /*sobre os status
              200 = OK
@@ -17,7 +19,7 @@ router.get("/",async (req, res)=>{
             const filtroquery = {}
             const campo = req.query
             const filtros = ["titulo", "autor", "ano", "descricao"]  
-            const control = ["limit", "sort", "page"] 
+            const control = ["limit", "sort"] 
             const sorted = {}
             const ordem = parseInt(campo.ordem)
             const guardar = {}
@@ -42,12 +44,15 @@ router.get("/",async (req, res)=>{
                         }
                         }                        
                     }else if(key=="limit"){
-                        if(isNaN(campo[key])){
+                        const limitnumber = Number(campo[key])
+                        if(isNaN(limitnumber)){
                             return res.status(400).json({mensagem: "Utilize número para limitar a quantidade a ser exibida"})
-                        }else if(campo[key] <= 0){
+                        }else if(limitnumber <= 0){
                             return res.status(400).json({mensagem: "Só é possível utilizar valores maiores que 0 e inteiro"})
+                        }else if(!Number.isInteger(limitnumber)){
+                            return res.status(400).json({mensagem: "Só é possível utilizar valores inteiros"})
                         }else{
-                            guardar[key] = campo[key]
+                            guardar[key] = limitnumber
                         }
                     }
                         else{ 
@@ -101,32 +106,54 @@ router.post("/", async (req, res)=>{
     if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao" in body) || !("categoria" in body)){
         return res.status(400).json({mensagem: "Campos em falta. Certifique-se de que os campos 'titulo', 'autor', 'ano', 'descricao' e 'categoria' estejam adicionados"})
        }
+       
     for(const key in body) {
+        
        if(!filtro.includes(key)){
         return res.status(400).json({mensagem: "Um campo não permitido foi adicionado"})
        }else{
-        if(body[key].trim() == ""){
+        if(key == "titulo" || key == "autor" || key == "descricao"){
+            if(typeof(body[key]) == "string"){
+               if(body[key].trim() == ""){
            return res.status(400).json({mensagem: "Não foi adicionado valor a algum campo"}) 
         }else{
           newlivro[key] = body[key]   
-        }
-        if(key=="ano"){
-            if(isNaN(body[key])){
-                return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
+        }  
             }else{
-               newlivro[key] = body[key]  
+             return res.status(400).json({mensagem: "O valor de algum campo não é permitido"})    
             }
         }
+       
+        if(key=="ano"){
+            if(typeof(body[key]) == "object" || typeof(body[key]) == "boolean"){
+               return res.status(400).json({mensagem: "Tipagem de ano inválida"}) 
+            }
+            const numeru = Number(body[key])
+            if(isNaN(numeru)){
+                return res.status(400).json({mensagem: "Digite o ano de lançamento do livro"})
+            }
+            if(numeru > 2026 || numeru == 0){
+                return res.status(400).json({mensagem: "Digite um ano válido"})
+            }
+            if(!Number.isInteger(numeru)){
+                return res.status(400).json({mensagem: "Não é permitido anos decimais"})
+            }
+               newlivro[key] = numeru  
+        }
+
         if(key=="categoria"){
             if(!mongoose.isValidObjectId(body[key])){
                 return res.status(400).json({mensagem: "ID inválido"})
-            }else{
-               newlivro[key] = body[key] 
             }
+            const cate = await categoriapop.findById(body[key])
+            if(cate == null){
+                return res.status(404).json({mensagem: "Categoria não encontrado"})
+            }
+                newlivro[key] = body[key]        
         }   
-       } 
-       
+       }    
     }
+    
     const novo = await new livro(newlivro).save()
     res.status(201).json(novo)
     }catch(err){
@@ -136,25 +163,68 @@ router.post("/", async (req, res)=>{
 
 router.put("/:id", async (req, res)=>{
     try{
-        const att = {
-        titulo: req.body.titulo,
-        autor: req.body.autor,
-        ano: req.body.ano,
-        descricao: req.body.descricao,
-        categoria: req.body.categoria        
-       } 
+        const filtro = ["titulo", "autor", "ano", "descricao", "categoria"]
+        const att = req.body
+        const novoobj = {}
         if(!mongoose.isValidObjectId(req.params.id)){
             return res.status(400).json({mensagem: "Coloque um ID válido"})
         }
-        const dado = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+        
+    for (const key in att) {
+        if(!filtro.includes(key)){
+                return res.status(400).json({mensagem: "Há campos não permitidos"})
+            }else{
+            if(key == "titulo" || key == "autor" || key == "descricao"){
+               if(typeof(att[key]) == "string"){
+                if(att[key].trim() == ""){
+                    return res.status(400).json({mensagem: "Há campos vazios"})
+                }else{
+                  novoobj[key] = att[key]  
+                }
+               }else{
+                return res.status(400).json({mensagem: "O valor de algum campo não é permitido"})
+               }    
+            }
+
+            if(key == "ano"){
+                if(typeof(att[key]) == "object" || typeof(att[key]) == "boolean"){
+                    return res.status(400).json({mensagem: "Tipagem de ano inválida"})
+                }
+                const convert = Number(att[key])
+                if(isNaN(convert)){
+                    return res.status(400).json({mensagem: "Valor de ano inválido"})
+                }
+                if(convert > 2026 || convert == 0){
+                    return res.status(400).json({mensagem: "Coloque um ano que não seja maior que o ano atual e diferente de 0"})
+                }
+                if(!Number.isInteger(convert)){
+                   return res.status(400).json({mensagem: "Coloque valores inteiros"}) 
+                }
+               novoobj[key] = att[key] 
+            } 
+
+            if(key == "categoria"){
+                if(!mongoose.isValidObjectId(att[key])){
+                    return res.status(400).json({mensagem: "ID de categoria inválido"})
+                }
+                const catte = await categoriapop.findById(att[key])
+                if(catte == null){
+                    return res.status(404).json({mensagem: "essa categoria não existe"})
+                }
+                novoobj[key] = att[key]
+            }   
+        }
+    }
+
+        const dado = await livro.findOneAndUpdate({_id: req.params.id}, novoobj, {new: true})
         if(!dado){
             return res.status(404).json({mensagem: "ID não existe"})    
-        }    
-    return res.status(200).json(dado)
+        }else{
+          return res.status(200).json(dado)  
+        }       
     }catch(err){
         res.status(500).json({mensagem: "Erro interno"})
-    } 
-    //resultado teste forçando erro = 400 Bad Request   
+    }   
 })
 
 router.delete("/:id", async (req, res)=>{
@@ -179,17 +249,59 @@ router.patch("/:id", async (req, res)=>{
     try{
         const camposfiltro = ["titulo", "autor", "ano", "descricao", "categoria"]
         const attparcial = req.body
-        const att = {}  
+        const att = {} 
+
         if(!mongoose.isValidObjectId(req.params.id)){
           return  res.status(400).json({mensagem: "Coloque um ID válido"})
         }
+
         for (const key in attparcial) {
             if(!camposfiltro.includes(key)){
               return res.status(400).json({mensagem: "Campo não existente digitado"})
             }else{
+                if(key == "titulo" || key == "autor" || key == "descricao"){
+                if(typeof(attparcial[key]) == "string"){
+                    if(attparcial[key].trim() == ""){
+                        return res.status(400).json({mensagem: "Há campos vazios"})
+                    }else{
+                        att[key] = attparcial[key]
+                    }
+                }else{
+                        return res.status(400).json({mensagem: "só são permitido texto nos campos 'titulo', 'autor' e 'descricao' "})
+                    }
+            }else{
                 att[key] = attparcial[key]
-            } 
+            }
         }
+        if(key == "ano"){
+            if(typeof(attparcial[key]) == "object" || typeof(attparcial[key]) == "boolean"){
+                    return res.status(400).json({mensagem: "Tipagem de ano inválida"})
+            }
+            const converter = Number(attparcial[key])
+            if(isNaN(converter)){
+                return res.status(400).json({mensagem: "Ano não é um número"})
+            }
+            if(converter > 2026 || converter == 0){
+                return res.status(400).json({mensagem: "Não é permitido ano maior que o ano atual ou igual a 0"})
+            }
+            if(!Number.isInteger(converter)){
+                return res.status(400).json({mensagem: "Não é permitido ano com valor decimal"})
+            }
+            att[key] = converter
+        }
+
+        if(key == "categoria"){
+            if(!mongoose.isValidObjectId(attparcial[key])){
+                return res.status(400).json({mensagem: "ID da categoria inválida"})
+            }
+            const catebuscar = await categoriapop.findById(attparcial[key])
+            if(catebuscar == null){
+                return res.status(404).json({mensagem: "Categoria não existe"})
+            }
+            att[key] = attparcial[key]
+        }
+        }
+
         const dadoparcial = await livro.findOneAndUpdate({_id: req.params.id}, att, {new: true}) 
         if(!dadoparcial){
             return res.status(404).json({mensagem: "ID não encontrado"})

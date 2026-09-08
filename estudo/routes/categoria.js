@@ -31,12 +31,15 @@ router.get("/", async (req, res)=>{
                                 }
                             }
                     }else if(key=="limit"){
+                        const limitcat = Number(campo[key])
                         if(isNaN(campo[key])){
                            return res.status(400).json({mensagem: "Digite apenas numeros"}) 
                         }else if(campo[key] <=0){
                            return res.status(400).json({mensagem: "Digite um numero maior que 0"}) 
+                        }else if(!Number.isInteger(limitcat)){
+                            return res.status(400).json({mensagem: "Digite um numero inteiro"}) 
                         }else{
-                            guardar[key] = campo[key]
+                            guardar[key] = limitcat
                         }
                     }   
             }else if(parametros.includes(key)){
@@ -69,10 +72,25 @@ router.get("/:id", async (req, res)=>{
 
 router.post("/", async (req, res)=>{
         try{
-            const addcat = {
-                nome: req.body.nome
+            const addcat = req.body
+           
+            if(!Object.hasOwn(addcat, "nome")){
+                return res.status(400).json({mensagem: "Só é permitido o campo 'nome'"})
             }
-         const novo = await new cat(addcat).save()
+            const verificando = Object.keys(addcat)
+            if(verificando.length >1){
+                return res.status(400).json({mensagem: "Só é permitido o campo 'nome'"})
+            }
+            if(typeof(addcat.nome) == "string"){
+                if(addcat.nome.trim() == ""){
+                 return res.status(400).json({mensagem: "Não foi adicionado valor"})   
+                }    
+            }else{
+               return res.status(400).json({mensagem: "Só é permitido texto"}) 
+            }
+            const novocat = {nome: addcat.nome}
+
+         const novo = await new cat(novocat).save()
          res.status(201).json(novo)  
         }catch(err){
             res.status(500).json({mensagem: "erro interno"})
@@ -81,14 +99,28 @@ router.post("/", async (req, res)=>{
 
 router.put("/:id", async (req, res)=>{
     try{
-        const att = {
-            nome: req.body.nome
-        } 
+        const att = req.body
         
         if(!mongoose.isValidObjectId(req.params.id)){
             return res.status(400).json({mensagem: "Coloque um ID válido"})
         }
-        const dado = await cat.findOneAndUpdate({_id: req.params.id}, att, {new: true})
+        if(!Object.hasOwn(att, "nome")){
+            return res.status(400).json({mensagem: "Só é permitido apenas o campo 'nome'"})
+        }
+        const arr = Object.keys(att)
+        if(arr.length > 1){
+            return res.status(400).json({mensagem: "Só é permitido apenas o campo 'nome'"})
+        }
+        if(typeof(att.nome) == "string"){
+            if(att.nome.trim() == ""){
+             return res.status(400).json({mensagem: "O campo 'nome' está vazio"})   
+            }
+        }else{
+            return res.status(400).json({mensagem: "Tipo de valor para 'nome' inválido"})
+        }
+        const novoput = {nome: att.nome}
+
+        const dado = await cat.findOneAndUpdate({_id: req.params.id}, novoput, {new: true})
         if(!dado){
             return res.status(404).json({mensagem: "ID não existe"})
         } 
@@ -103,6 +135,9 @@ router.put("/:id", async (req, res)=>{
 })
 router.delete("/:id", async (req, res)=>{
     try{
+        if(!mongoose.isValidObjectId(req.params.id)){
+           return res.status(400).json({mensagem: "Coloque um ID válido"}) 
+        }
         const del = await cat.findOneAndDelete({_id:req.params.id})
         if(!del){
           return res.status(404).json({mensagem: "ID não encontrado"})  
