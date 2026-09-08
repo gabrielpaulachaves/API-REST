@@ -12,7 +12,7 @@ collection:
     meta:
       id: req_f0cb33ce71f04e199019d603bc5798df
       created: 1785760904581
-      modified: 1787143236853
+      modified: 1788269397687
       isPrivate: false
       description: ""
       sortKey: -1785760904581
@@ -38,20 +38,20 @@ collection:
     meta:
       id: req_28562c4e19104de987b2a853a4da2c8c
       created: 1785761312254
-      modified: 1787664339151
+      modified: 1788877756358
       isPrivate: false
       description: ""
       sortKey: -1785760699679.5
     method: POST
     body:
       mimeType: application/json
-      text: |-
+      text: >-
         {
-        	"titulo": "wewf",
-        	"autor": "ewgfwdfsd",
-        	"ano": 2007,
-        	"descricao": "Seu cavalo ta doente? fodase", 
-        	"categoria": "6a85a28b62c23cd82fe15666"
+        	"titulo": "História do Neymar",
+        	"autor": "Neymar Junior",
+        	"ano": 2013,
+        	"descricao": "A quantidade de mulher que ele traiu, é a quantidade de prêmios que ele ganhou", 
+        	"categoria": "6a79d8314d5c1a18451e2525"
         }
     headers:
       - name: Content-Type
@@ -69,7 +69,7 @@ collection:
     meta:
       id: req_e7c6c74782e846109ca7afe40ed66f1c
       created: 1785761341074
-      modified: 1787142808603
+      modified: 1788185097669
       isPrivate: false
       description: ""
       sortKey: -1785760597228.75
@@ -78,7 +78,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"nome":"Romance"
+        	"nome":"neymar"
         }
     headers:
       - name: Content-Type
@@ -144,25 +144,25 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/livros/
+  - url: http://localhost:3333/livros/6a70970ff6ce6eee536423ac
     name: livros
     meta:
       id: req_73e6dd0dca644daaaeb8ca0db3cb520d
       created: 1785761366548
-      modified: 1785851002916
+      modified: 1788185626310
       isPrivate: false
       description: ""
-      sortKey: -1785760520390.6875
+      sortKey: -1785760571616.0625
     method: PUT
     body:
       mimeType: application/json
-      text: >-
+      text: |-
         {
         	"titulo": "O Pai da computaria",
         	"autor": "Allan Turing",
-        	"ano": 1945,
-        	"descricao": "palavras não bastam, tem que se envolver com a novinha que senta e não para..",
-        	"categoria": "6a709717f6ce6eee536423ad"
+        	"ano": "2024",
+        	"descricao": "Computadores",
+        	"categoria": ""
         }
     headers:
       - name: Content-Type
@@ -175,12 +175,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/livros/
+  - url: http://localhost:3333/livros/6a9041d08556746bb4317cf5
     name: livros
     meta:
       id: req_3e5d02ca318343908d02e992fcf8dd1a
       created: 1785761412311
-      modified: 1786970273276
+      modified: 1787838940120
       isPrivate: false
       description: ""
       sortKey: -1785760507584.3438
@@ -201,12 +201,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:3333/categorias/
+  - url: http://localhost:3333/categorias/6a958a0b17ffd000a112b857
     name: categorias
     meta:
       id: req_47e61861ee894a2fbe4de200c75bdf05
       created: 1785761422642
-      modified: 1785850994731
+      modified: 1788185116258
       isPrivate: false
       description: ""
       sortKey: -1785760501181.1719
@@ -232,7 +232,7 @@ collection:
     meta:
       id: req_66be2f8e89004b158702265ef4a86e1e
       created: 1785847610557
-      modified: 1787143269775
+      modified: 1788185744418
       isPrivate: false
       description: ""
       sortKey: -1785760513987.5156
@@ -241,7 +241,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"descricao": "Quer aprender fazer sexo?"
+        	"descricao": "sexo"
         }
     headers:
       - name: Content-Type
