@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const router = express.Router()
 require("../models/livros")
 require("../models/categoria")
+const middles = require("../middlewares/middleware")
 const categoriapop = mongoose.model("categorias")
 const livro = mongoose.model("livros")
             /*sobre os status
@@ -98,7 +99,7 @@ router.get("/:id", async (req, res)=>{
     }
 })
 
-router.post("/", async (req, res)=>{
+router.post("/", middles(["titulo", "autor", "ano", "descricao", "categoria"]), async (req, res)=>{
     try{
         const filtro = ["titulo", "autor", "ano", "descricao", "categoria"]
         const newlivro = {}
