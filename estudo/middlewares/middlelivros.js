@@ -1,7 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const categoriapop = mongoose.model("categorias")
-const livro = mongoose.model("livros")
+
 
 function validar(val, http){
     const filtro = val
@@ -203,8 +203,9 @@ if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao
     }
         return parcial
     }else{
-        console.log("método HTTP iválido.")
-    }
+        throw new Error("Parâmetro de método inválido.")
+        //a diferença do throw new Error para um res.status(500) é que o res.status() só funciona quando há uma requisicao HTTP (cliente/servidor), já o throw new error é direto pro codigo, ele nao fala com a requisicao, ele existe antes de qualquer requisicao existir 
+    } 
     
 }
 

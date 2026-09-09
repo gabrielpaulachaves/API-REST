@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const router = express.Router()
 require("../models/livros")
 require("../models/categoria")
-const middles = require("../middlewares/middleware")
+const middles = require("../middlewares/middlelivros")
 const livro = mongoose.model("livros")
             /*sobre os status
              200 = OK
