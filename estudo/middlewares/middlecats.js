@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 function validar(http){
     
     if(http == "post"){
+
      async function postar(req, res, next){
          try{
             const addcat = req.body
@@ -25,10 +26,11 @@ function validar(http){
             const novocat = {nome: addcat.nome}
             
            req.novocat = novocat 
+          next()
     }catch(err){
         res.status(500).json({mensagem: "erro interno"})
     } 
-    next()
+     
     }
     return postar
     
@@ -58,11 +60,12 @@ function validar(http){
                     const novoput = {nome: att.nome}
 
                    req.novoput = novoput 
+                   next()
         }catch(err){
             res.status(500).json({mensagem: "erro interno"})
         }
 
-        next()
+        
     }
 
     return atualizar

@@ -63,8 +63,7 @@ if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao
     }
     req.newli = newli
     next()
-        }
-        catch(err){
+        }catch(err){
             res.status(500).json({mensagem: "Erro interno"})
             console.log(err)
         }
