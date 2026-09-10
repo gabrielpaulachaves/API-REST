@@ -147,9 +147,12 @@ if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao
                     }
             
                     for (const key in attparcial) {
+
                         if(!filtro.includes(key)){
                           return res.status(400).json({mensagem: "Campo não existente digitado"})
                         }else{
+
+
                             if(key == "titulo" || key == "autor" || key == "descricao"){
                             if(typeof(attparcial[key]) == "string"){
                                 if(attparcial[key].trim() == ""){
@@ -160,12 +163,8 @@ if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao
                             }else{
                                     return res.status(400).json({mensagem: "só são permitido texto nos campos 'titulo', 'autor' e 'descricao' "})
                                 }
-                        }else{
-                            att[key] = attparcial[key]
-                        }
-                    }
-                    if(key == "ano"){
-                        if(typeof(attparcial[key]) == "object" || typeof(attparcial[key]) == "boolean"){
+                        }else if(key == "ano"){
+                            if(typeof(attparcial[key]) == "object" || typeof(attparcial[key]) == "boolean"){
                                 return res.status(400).json({mensagem: "Tipagem de ano inválida"})
                         }
                         const converter = Number(attparcial[key])
@@ -179,10 +178,8 @@ if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao
                             return res.status(400).json({mensagem: "Não é permitido ano com valor decimal"})
                         }
                         att[key] = converter
-                    }
-            
-                    if(key == "categoria"){
-                        if(!mongoose.isValidObjectId(attparcial[key])){
+                        }else if(key == "categoria"){
+                            if(!mongoose.isValidObjectId(attparcial[key])){
                             return res.status(400).json({mensagem: "ID da categoria inválida"})
                         }
                         const catebuscar = await categoriapop.findById(attparcial[key])
@@ -190,6 +187,9 @@ if(!("titulo" in body) || !("autor" in body) || !("ano" in body) || !("descricao
                             return res.status(404).json({mensagem: "Categoria não existe"})
                         }
                         att[key] = attparcial[key]
+                        }else{
+                            return res.status(500).json({mensagem: "Verificação de campos não foi realizada com sucesso."})
+                        }
                     }
                     }
                     req.att = att
